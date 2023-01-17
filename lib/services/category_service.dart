@@ -1,0 +1,7 @@
+import 'package:to_do_app_2023/models/category.dart';
+class CategoryService{
+  saveCategory(Category category){
+    print(category.name);
+    print(category.description);
+  }
+}
