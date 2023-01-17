@@ -1,10 +1,10 @@
 class Todo{
-  late int id;
-  late String title;
-  late String description;
-  late String category;
-  late String todoDate;
-  late int isFinished;
+  int id;
+  String title;
+  String description;
+  String category;
+  String todoDate;
+  int isFinished;
 
   todoMap(){
     var mapping = <String, dynamic>{};

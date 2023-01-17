@@ -4,7 +4,7 @@ import 'package:to_do_app_2023/services/category_service.dart';
 import '../models/category.dart';
 
 class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({Key? key}) : super(key: key);
+  const CategoryScreen({Key key}) : super(key: key);
 
   @override
   State<CategoryScreen> createState() => _CategoryScreenState();
@@ -71,13 +71,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
               _category.description = _categoryDescriptionController.text;
 
               var result = await _categoryService.saveCategories(_category);
-              if(result>0){
+              if(result > 0){
                 Navigator.pop(context);
+                getAllCategories();
                 const snackBar = SnackBar(
                   content: Text('Added!'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                getAllCategories();
+
               }
             },
             child: const Text("Save"),
@@ -129,14 +130,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
               _category.description = _editCategoryDescriptionController.text;
 
               var result = await _categoryService.updateCategories(_category);
-              if(result>0){
+              if (result > 0){
                 Navigator.pop(context);
+                getAllCategories();
                 const snackBar = SnackBar(
                   content: Text('Updated!'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                getAllCategories();
-                
+
               }
             },
             child: const Text("Update"),
@@ -183,14 +184,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 foregroundColor: MaterialStatePropertyAll<Color>(Colors.red)
             ),
             onPressed: () async{
-              var result = await _categoryService.deleteCategories(_category);
+              var result = await _categoryService.deleteCategories(categoryId);
               if(result>0){
                 Navigator.pop(context);
+                getAllCategories();
                 const snackBar = SnackBar(
                   content: Text('Deleted!'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                getAllCategories();
+
               }
             },
             child: const Text("Delete"),
@@ -205,7 +207,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: ElevatedButton(onPressed: (){},
+        leading: ElevatedButton(onPressed: ()=>Navigator.pop(context),
           style: const ButtonStyle(
               backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue)
           ),

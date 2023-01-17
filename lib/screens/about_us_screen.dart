@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class AboutUsScreen extends StatefulWidget {
-  const AboutUsScreen({Key? key}) : super(key: key);
+  const AboutUsScreen({Key key}) : super(key: key);
 
   @override
   State<AboutUsScreen> createState() => _AboutUsScreenState();
