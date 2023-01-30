@@ -15,7 +15,8 @@ class _TodoScreenState extends State<TodoScreen> {
   final _todoTitleController = TextEditingController();
   final _todoDescriptionController = TextEditingController();
   final _todoTodoDateController = TextEditingController();
-
+  TodoService _todoService;
+  List<Todo> _todoList = <Todo>[];
   var _selectedValue;
 
   final _categories = <DropdownMenuItem>[];
@@ -25,9 +26,28 @@ class _TodoScreenState extends State<TodoScreen> {
     _loadCategories();
   }
 
+  getAllTodos() async{
+    _todoService = TodoService();
+    _todoList = <Todo>[];
+    var todos = await _todoService.readTodos();
+    todos.forEach((todo){
+      setState(() {
+        var todoModel = Todo();
+        todoModel.id = todo['id'];
+        todoModel.title = todo['title'];
+        todoModel.description = todo['description'];
+        todoModel.category = todo['category'];
+        todoModel.todoDate = todo['todoDate'];
+        todoModel.isFinished = todo['isFinished'];
+        todoModel.todoDate = todo['todo'];
+        _todoList.add(todoModel);
+      });
+    });
+  }
+
   _loadCategories() async{
-    var _categoriesService = CategoryService();
-    var categories = await _categoriesService.readCategories();
+    var categoriesService = CategoryService();
+    var categories = await categoriesService.readCategories();
     categories.forEach((category){
       setState(() {
         _categories.add(DropdownMenuItem(
@@ -76,10 +96,7 @@ class _TodoScreenState extends State<TodoScreen> {
                         lastDate: DateTime(2100),
                     );
                     if(pickedDate != null ){
-                      print(pickedDate);  //get the picked date in the format => 2022-07-04 00:00:00.000
                       String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                      print(formattedDate); //formatted date output using intl package =>  2022-07-04
-                      //You can format date as per your need
                       setState(() {
                         _todoTodoDateController.text = formattedDate; //set formatted date to TextField value.
                       });
@@ -112,10 +129,11 @@ class _TodoScreenState extends State<TodoScreen> {
                   todoObject.isFinished = 0;
                   todoObject.category = _selectedValue.toString();
                   todoObject.todoDate = _todoTodoDateController.text;
-                  var _todoService = TodoService();
-                  var result = await _todoService.saveTodos(todoObject);
+                  var todoService = TodoService();
+                  var result = await todoService.saveTodos(todoObject);
                   if(result>0){
                     Navigator.pop(context);
+                    getAllTodos();
                     const snackBar = SnackBar(
                       content: Text('Added!'),
                     );

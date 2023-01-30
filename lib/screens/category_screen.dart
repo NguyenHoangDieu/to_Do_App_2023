@@ -69,7 +69,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
             onPressed: () async{
               _category.name = _categoryNameController.text;
               _category.description = _categoryDescriptionController.text;
-
               var result = await _categoryService.saveCategories(_category);
               if(result > 0){
                 Navigator.pop(context);
@@ -78,7 +77,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   content: Text('Added!'),
                 );
                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
               }
             },
             child: const Text("Save"),
@@ -101,14 +99,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   hintText: "Write a description",
                   labelText: "Description",
                 ),
-              )
+              ),
             ],
           ),
         ),
       );
     });
   }
-
   _editFormDialog(BuildContext context){
     return showDialog(context: context, barrierDismissible: true, builder: (param){
       return AlertDialog(
